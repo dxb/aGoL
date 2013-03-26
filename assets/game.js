@@ -6,9 +6,8 @@ var Game = (function(game, $, undefined) {
 	var colors;
 	var pixSize;
 	var cells;
-	var autoRun;
 	var stats;
-    var test= 'toto';
+    var animation;
 
 	game.init = function(config) {
 		canvas    = document.getElementById(config.canvas);
@@ -18,10 +17,10 @@ var Game = (function(game, $, undefined) {
 		canvasCtx.fillStyle   = colors.alive;
 		pixSize   = config.pixSize || 7;
 		cells     = {};
-        test = [];
+        animation = '';
+
 		for (var i in config.coords)
 		{
-            addCell(test, config.coords[i].x,config.coords[i].y, 1);
             cells[config.coords[i].x + '*' + config.coords[i].y] = 1;
 		}
 		stats = {
@@ -29,10 +28,6 @@ var Game = (function(game, $, undefined) {
 			,nbSteps: 0
 		};
 	};
-
-    var addCell = function(test, xPos,yPos, cellValue){
-        return test.push({x:xPos, y:yPos, value: cellValue});
-    };
 
 	game.start = function() {
 		initRender();
@@ -93,17 +88,17 @@ var Game = (function(game, $, undefined) {
 		}
 		renderCells(cells);
 		++stats.nbSteps;
+        animation = window.requestAnimationFrame(game.newEra);
 	};
 
 	game.toggleAutoRun = function(timer) {
-		if (autoRun)
+		if (animation)
 		{
-			clearInterval(autoRun);
-			autoRun = false;
+            window.cancelAnimationFrame(animation);
+            animation = false;
 			return;
 		}
-        window.requestAnimationFrame( this.newEra, timer );
-		//autoRun = setInterval(this.newEra, timer);
+        animation = window.requestAnimationFrame( this.newEra );
 	}
 
 	var initRender = function() {
@@ -117,10 +112,6 @@ var Game = (function(game, $, undefined) {
 	};
 
 	var renderCells = function(cells) {
-        //console.log(test);
-        test.forEach(function(cell){
-            console.log(cell);
-        });
 		for (var i in cells)
 		{
 			if (cells[i] === 2)

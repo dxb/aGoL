@@ -1,5 +1,4 @@
 define(['jquery','game'], function ($, game) {
-    console.log('Running jQuery %s', $().jquery);
     (function() {
         $(document).ready(function() {
             $(document).on('game.rendered', function(game, stats) {

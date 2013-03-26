@@ -40,6 +40,4 @@ require(['app', 'jquery', 'main'], function (app, $,main){
                 clearTimeout(id);
             };
     }());
-
-    console.log(app);
 });
